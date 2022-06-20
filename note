@@ -1,0 +1,2 @@
+Tạo một dự án ReactJS:
+    - Chạy git bash trong thư mục project: npx create-react-app tênfile
