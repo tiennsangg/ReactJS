@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
 function App() {
+  const courses = [
+    {
+      id: 1,
+      name: 'HTML'
+    },
+    {
+      id: 2,
+      name: 'JS'
+    },
+    {
+      id: 3,
+      name: 'JV'
+    }
+  ]
+
+const [checked, setChecked] = useState('');  
+
+const handleChecked = () => {
+  //CALL API
+  console.log(checked);
+}
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {
+        courses.map((e) => {
+          return(
+            <div key={e.id}>
+            <input 
+              type="radio"
+              checked = {checked === e.id} //so sánh khi checked(State) phải giống với id của bài học thì mới cho check
+              onChange={() => setChecked(e.id)} //khi onChange sẽ lấy theo id rồi đẩy vào State
+            /> {e.name}
+            </div>
+          )
+        })
+      }
+      <button onClick = {handleChecked}>Gửi lên API</button>
     </div>
-  );
+  )
 }
 
 export default App;

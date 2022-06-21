@@ -1,2 +1,73 @@
 Tạo một dự án ReactJS:
     - Chạy git bash trong thư mục project: npx create-react-app tênfile
+
+===================== HOOKS ============================
+* Hooks chỉ dùng cho function component
+useState: Trạng thái dữ liệu (VD: Từ số 1 set thành 2, từ Nguyễn set thành Văn). Dữ liệu thay đổi gì, giao diện thay đổi đó
+    import { useState } from "react"
+        function Component() {
+            const [state, setState] = useState(initState)
+
+            //khối code
+        }
+    useState nhận 1 đối số khởi tạo, chỉ dùng 1 lần đầu khi khởi tạo và trả về một mảng gồm 2 phần tử [state, setState]. state sẽ nhận lại đối số đầu tiên truyền vào. setState là hàm để set lại state. Ví dụ giá trị ban đầu truyền vào là 1 thì kết quả sẽ nhận lại state là 1 và nếu muốn thay đổi giá trị thì setState = 2 thì state sẽ update lại thành 2
+        VD 1:
+            function App() {
+                const [counter, setCounter] = useState(1) //Có thể truyền function vào initState
+                
+                const HandleIncrease = () => { //Có thể truyền function vào setCounter, setCounter sẽ luôn nhận đc 1 đối số đó là giá trị hiện tại của state (setCounter(prev)) prev sẽ là giá trị hiện tại của state
+                    setCounter(counter + 1)
+                }
+
+                return (
+                    <div className="App" style={{padding: 20}}>
+                    <h1>{counter}</h1>
+                    <button onClick={HandleIncrease}>Increase</button>
+                    </div>
+                );
+            }
+        VD 2:
+            function App() {
+                const [info, setInfo] = useState({
+                    name: 'Sang',
+                    old: 18
+                })
+
+                const handleUpdate = () => {
+                    setInfo({ setInfo sẽ luôn nhận đc 1 đối số đó là giá trị hiện tại của info (setInfo(prev)) prev sẽ là giá trị hiện tại của info
+                    ...info, //Bản chất của state sẽ là thay mới chứ khong phải thêm nên phải giải giá trị cũ vào rồi thêm giá trị mới là address
+                    address: 'HN'
+                    })
+                }
+
+                return (
+                    <div>
+                    <h2>{JSON.stringify(info)}</h2> //Hiện thị thành dạng chuỗi
+                    <button onClick={handleUpdate}>Update</button>
+                    </div>
+                )
+            }
+        VD 3:
+        
+            function App() {
+                const gift = [
+                    'Ô tô',
+                    'Xe máy',
+                    'Máy bay',
+                ]  
+
+                const [resultGift, setGift] = useState()
+
+                const handleRoll = () => {
+                const randomGift = Math.floor(Math.random() * gift.length);
+                setGift(gift[randomGift]);
+                console.log(randomGift)
+                }
+
+                return (
+                    <div>
+                    <h2>{resultGift || 'Chưa có phần thưởng'}</h2>
+                    <button onClick={handleRoll}>ROLL</button>
+                    </div>
+                )
+            }
