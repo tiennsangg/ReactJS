@@ -71,3 +71,57 @@ useState: Trạng thái dữ liệu (VD: Từ số 1 set thành 2, từ Nguyễn
                     </div>
                 )
             }
+
+Mounted và Unmounted - Gán vào và Gỡ ra thường dùng với component
+ - Mounted đưa component vào sử dụng và Unmounted là ngược lại
+
+ ===============================================================================================================
+ Use Effect: sử dụng khi muốn thực hiện các Side Effect (Là những event, hành động có thể làm thay đổi DOM trong React component. VD: Call API rồi sử dụng lại dữ liệu hiển thị trên dom)
+    Thường sử dụng để:
+        - Update dom
+        - Call API
+        - listen DOM events (lắng nghe sự kiện)
+        - Remove listener / unsubcribe
+        * Nhận 2 đối số useEfecct(callback, [dependecies]) - đối số thứ 2 ko bắt buộc, callback sẽ truyền vào khối code side effect. 
+        Callback của useEffect có thể return một function (chỉ function) đó là cleanup function (function luôn gọi trước khi unmounted) thường dùng để dọn dẹp những thứ trong bộ nhớ khi unmounted để tránh rò rỉ bộ nhớ
+
+            Có 3 trường hợp, cách dùng khi sử dụng useEfecct: Cả 3 trường hợp luôn callback lần đầu khi component mounted
+                TH 1: không truyền đối số 2 dependecies: Luôn gọi lại callback mỗi khi re-render (Ví dụ mỗi khi setState sẽ re-render thì useEffect cũng callback)
+                    const [title, setTitle] = useState('')
+                        console.log(title)
+                        useEffect(() => {
+                            document.title = title; //update thay đổi liên tục title dựa theo onChange
+                        })
+                        return (
+                            <React.Fragment>
+                            <h1>Nhập title</h1>
+                            <input
+                                value={title}
+                                onChange={e => setTitle(e.target.value)} //Mỗi khi setTitle hoạt động thì useEfecct cũng callback
+                            />
+                            </React.Fragment>
+                        )
+                
+                TH 2:  Truyền đối số 2 nhưng là mảng trống (không có phụ thuộc về dữ liệu) - Chỉ gọi callback 1 lần sau khi component Mounted
+                            useEffect(() => {
+                                fetch('https://jsonplaceholder.typicode.com/users')//link api
+                                .then(response => response.json()) //trả về response stram (giá trị chưa covert) và return promise respons.json để ở dưới trả về object được conver sang js 
+                                .then(duLieu => setUser(duLieu))// Nhận lại được dữ liệu đã đc convert sang js rồi gán vào state để nhận giá trị là mảng gồm các object
+                                // .catch(console.log('Lỗi ở đau đấy'))//Sẽ nhảy vào Catch khi xảy ra lỗi, có thể alert hoặc render ra UI cho KH
+                            }, []) //Khi thêm đối số thứ 2 là mảng rỗng vào thì useEffect sẽ chỉ callback 1 lần duy nhất, nếu bỏ đối số 2 thì sẽ callback mỗi lần re-render
+                            return (
+                                <React.Fragment>
+                                <h1>Nhập title</h1>
+                                <input
+                                    value={title}
+                                    onChange={e => setTitle(e.target.value)}
+                                />
+                                <ul>
+                                    {users.map((e, i) => {
+                                        return <li key={i}>{e.name}</li>
+                                    })}
+                                </ul>
+                                </React.Fragment>
+                            )
+
+                TH 3: Truyền đối số 2 là một biến trong ngoặc vuông [dependecies] - mỗi lần re-render sẽ chỉ callback khi kiểm tra thấy giá trị của biến đối số 2 thay đổi 

@@ -1,44 +1,16 @@
 import React, { useState } from 'react';
-
+import Content from './Content'
+//Thêm giá trị vào và hiển thị  dạng list
 function App() {
-  const courses = [
-    {
-      id: 1,
-      name: 'HTML'
-    },
-    {
-      id: 2,
-      name: 'JS'
-    },
-    {
-      id: 3,
-      name: 'JV'
-    }
-  ]
+  const [show, setShow] = useState(false)
 
-const [checked, setChecked] = useState('');  
-
-const handleChecked = () => {
-  //CALL API
-  console.log(checked);
-}
-
+  const toggle = () => {
+    setShow(!show)//mỗi lần click là sẽ set giá trị ngược lại với show hiẹn tại nên sẽ thay đổi true false lên tục
+  }
   return (
     <div>
-      {
-        courses.map((e) => {
-          return(
-            <div key={e.id}>
-            <input 
-              type="radio"
-              checked = {checked === e.id} //so sánh khi checked(State) phải giống với id của bài học thì mới cho check
-              onChange={() => setChecked(e.id)} //khi onChange sẽ lấy theo id rồi đẩy vào State
-            /> {e.name}
-            </div>
-          )
-        })
-      }
-      <button onClick = {handleChecked}>Gửi lên API</button>
+      <button onClick={toggle}>Toggle</button>
+      {show && <Content/>} {/* Nếu show = true thì vế 2 mới chạy, hiện tại show = false vì initState đang set = false */}
     </div>
   )
 }
